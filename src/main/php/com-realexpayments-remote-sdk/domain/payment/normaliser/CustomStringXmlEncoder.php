@@ -6,9 +6,8 @@ namespace com\realexpayments\remote\sdk\domain\payment\normaliser;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
-use Symfony\Component\Serializer\Encoder\SerializerAwareEncoder;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
-
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Class CustomXmlEncoder
@@ -18,8 +17,11 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
  * deserialised as strings
  * @author vicpada
  */
-class CustomStringXmlEncoder extends SerializerAwareEncoder implements EncoderInterface, DecoderInterface, NormalizationAwareInterface {
-	/**
+class CustomStringXmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwareInterface {
+
+    use SerializerAwareTrait;
+
+    /**
 	 * @var \DOMDocument
 	 */
 	private $dom;
