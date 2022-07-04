@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * deserialised as strings
  * @author vicpada
  */
-class CustomStringXmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwareInterface {
+class CustomStringXmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwareInterface, SerializerAwareInterface {
 
     use SerializerAwareTrait;
 
