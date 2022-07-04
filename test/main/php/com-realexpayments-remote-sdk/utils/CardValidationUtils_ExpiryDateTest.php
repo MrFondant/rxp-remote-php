@@ -17,19 +17,19 @@ class CardValidationUtils_ExpiryDateTest extends \PHPUnit_Framework_TestCase {
 	public function CardValidationUtils_ExpiryDateTestDataProvider() {
 		// test with this values
 		$testCases = array(
-			array( "Correct format MMYY", "1220", true ),
+			array( "Correct format MMYY", "1222", true ),
 			array( "Correct format MM-YY", "12-20", false ),
 			array( "Correct format MM/YY", "12/20", false ),
 			array( "Correct format MM YY", "12 20", false ),
 			array( "Incorrect format MM\\YY", "12\\20", false ),
 			array( "Incorrect format AABB", "AABB", false ),
-			array( "Correct future date MMYY", "1221", true ),
-			array( "Incorrect date MMYY", "1221", true ),
+			array( "Correct future date MMYY", "1223", true ),
+			array( "Incorrect date MMYY", "1222", true ),
 			array( "Incorrect date MMYY", "1321", false ),
 			array( "Incorrect date MMYY", "1212", false ),
 			array( "Incorrect date MMYY", "0015", false ),
 			array( "Incorrect date MMYY", "0415", false ),
-			array( "Correct date MMYY", "1216", true ),
+			array( "Correct date MMYY", "1226", true ),
 			array( "Incorrect date MMYY", "0021", false )
 		);
 
