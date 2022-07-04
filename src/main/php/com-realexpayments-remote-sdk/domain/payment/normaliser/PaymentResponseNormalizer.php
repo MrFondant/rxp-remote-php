@@ -15,8 +15,12 @@ use com\realexpayments\remote\sdk\domain\payment\TssResultCheck;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 
-class PaymentResponseNormalizer extends AbstractNormalizer {
+class PaymentResponseNormalizer extends AbstractNormalizer implements DenormalizerAwareInterface {
+
+    use DenormalizerAwareTrait;
 
     /**
      * Denormalizes data back into an object of the given class.
@@ -51,7 +55,7 @@ class PaymentResponseNormalizer extends AbstractNormalizer {
         $response->setTssResult( $this->denormaliseTss( $array ) );
         $response->setCardIssuer( $this->denormaliseCardIssuer( $array ) );
         $response->setDccInfoResult(
-            $this->serializer->denormalize( $array['dccinfo'], DccInfoResult::GetClassName(), $format, $context )
+            $this->denormalizer->denormalize( $array['dccinfo'], DccInfoResult::GetClassName(), $format, $context )
         );
         $response->setFraudFilter($this->denormaliseFraudFilter($array));
 

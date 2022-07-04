@@ -20,11 +20,16 @@ use com\realexpayments\remote\sdk\domain\payment\TssInfo;
 use com\realexpayments\remote\sdk\domain\PaymentData;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
+use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 
-class PaymentRequestNormalizer extends AbstractNormalizer{
+class PaymentRequestNormalizer extends AbstractNormalizer implements DenormalizerAwareInterface {
 
-	private $format;
+	use DenormalizerAwareTrait;
+
+    private $format;
 	private $context;
 
 
@@ -106,7 +111,7 @@ class PaymentRequestNormalizer extends AbstractNormalizer{
 	}
 
 	private function denormaliseAmount( \ArrayAccess $array ) {
-		return $this->serializer->denormalize( $array['amount'], Amount::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['amount'], Amount::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseComments( \ArrayAccess $array ) {
@@ -141,12 +146,12 @@ class PaymentRequestNormalizer extends AbstractNormalizer{
 
 	private function denormaliseAutoSettle( \ArrayAccess $array ) {
 
-		return $this->serializer->denormalize( $array['autosettle'], AutoSettle::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['autosettle'], AutoSettle::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseFraudFilter( \ArrayAccess $array ) {
 
-		return $this->serializer->denormalize( $array['fraudfilter'], FraudFilter::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['fraudfilter'], FraudFilter::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseRecurring( \ArrayAccess $array ) {
@@ -232,19 +237,19 @@ class PaymentRequestNormalizer extends AbstractNormalizer{
 	}
 
 	private function denormalizePaymentData( $array ) {
-		return $this->serializer->denormalize( $array['paymentdata'], PaymentData::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['paymentdata'], PaymentData::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormalizePayer( $array ) {
-		return $this->serializer->denormalize( $array['payer'], Payer::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['payer'], Payer::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseCard( $array ) {
-		return $this->serializer->denormalize( $array['card'], Card::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['card'], Card::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseDccInfo( $array ) {
-		return $this->serializer->denormalize( $array['dccinfo'], DccInfo::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['dccinfo'], DccInfo::GetClassName(), $this->format, $this->context );
 	}
 
 	/**

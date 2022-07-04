@@ -14,8 +14,12 @@ use com\realexpayments\remote\sdk\domain\threeDSecure\ThreeDSecureRequest;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 
-class ThreeDSecureRequestNormalizer extends AbstractNormalizer {
+class ThreeDSecureRequestNormalizer extends AbstractNormalizer implements DenormalizerAwareInterface {
+
+    use DenormalizerAwareTrait;
 
 	private $format;
 	private $context;
@@ -60,7 +64,7 @@ class ThreeDSecureRequestNormalizer extends AbstractNormalizer {
 	}
 
 	private function denormaliseAmount( \ArrayAccess $array ) {
-		return $this->serializer->denormalize( $array['amount'], Amount::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['amount'], Amount::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseComments( \ArrayAccess $array ) {
@@ -92,17 +96,17 @@ class ThreeDSecureRequestNormalizer extends AbstractNormalizer {
 	}
 
 	private function denormaliseCard( \ArrayAccess $array ) {
-		return $this->serializer->denormalize( $array['card'], Card::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['card'], Card::GetClassName(), $this->format, $this->context );
 	}
 
 
 	private function denormalisePaymentData( $array ) {
-		return $this->serializer->denormalize( $array['paymentdata'], PaymentData::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['paymentdata'], PaymentData::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseAutoSettle( $array ) {
 
-		return $this->serializer->denormalize( $array['autosettle'], AutoSettle::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $array['autosettle'], AutoSettle::GetClassName(), $this->format, $this->context );
 	}
 
 	/**
