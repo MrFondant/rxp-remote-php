@@ -11,12 +11,15 @@ use com\realexpayments\remote\sdk\domain\payment\CommentCollection;
 use com\realexpayments\remote\sdk\domain\PhoneNumbers;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class PayerNormalizer implements NormalizerInterface, DenormalizerInterface {
+class PayerNormalizer implements NormalizerInterface, DenormalizerInterface, DenormalizerAwareInterface {
     use SerializerAwareTrait;
+    use DenormalizerAwareTrait;
 
 	private $format;
 	private $context;
@@ -109,11 +112,11 @@ class PayerNormalizer implements NormalizerInterface, DenormalizerInterface {
 	}
 
 	private function denormaliseAddress( $data ) {
-		return $this->serializer->denormalize( $data['address'], PayerAddress::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $data['address'], PayerAddress::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormalisePhoneNumbers( $data ) {
-		return $this->serializer->denormalize( $data['phonenumbers'], PhoneNumbers::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $data['phonenumbers'], PhoneNumbers::GetClassName(), $this->format, $this->context );
 	}
 
 	private function denormaliseComments( \ArrayAccess $array ) {

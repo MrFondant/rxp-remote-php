@@ -8,13 +8,16 @@ use com\realexpayments\remote\sdk\domain\Amount;
 use com\realexpayments\remote\sdk\domain\DccInfo;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class DccInfoNormalizer implements NormalizerInterface, DenormalizerInterface {
+class DccInfoNormalizer implements NormalizerInterface, DenormalizerInterface, DenormalizerAwareInterface {
 
     use SerializerAwareTrait;
+    use DenormalizerAwareTrait;
 	/**
 	 * Normalizes an object into a set of arrays/scalars.
 	 *
@@ -77,7 +80,7 @@ class DccInfoNormalizer implements NormalizerInterface, DenormalizerInterface {
 		        ->addRate( $data['rate'] )
 		        ->addRateType( $data['ratetype'] );
 
-		$amount = $this->serializer->denormalize( $data['amount'], Amount::GetClassName(), $format, $context );
+		$amount = $this->denormalizer->denormalize( $data['amount'], Amount::GetClassName(), $format, $context );
 		if ( $amount != null ) {
 			$dccInfo->setAmount( $amount );
 		}

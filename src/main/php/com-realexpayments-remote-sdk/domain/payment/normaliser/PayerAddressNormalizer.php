@@ -8,13 +8,17 @@ use com\realexpayments\remote\sdk\domain\Country;
 use com\realexpayments\remote\sdk\domain\PayerAddress;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class PayerAddressNormalizer implements NormalizerInterface, DenormalizerInterface {
+class PayerAddressNormalizer implements NormalizerInterface, DenormalizerInterface, DenormalizerAwareInterface {
 
     use SerializerAwareTrait;
+    use DenormalizerAwareTrait;
+
 	private $format;
 	private $context;
 
@@ -91,7 +95,7 @@ class PayerAddressNormalizer implements NormalizerInterface, DenormalizerInterfa
 	}
 
 	private function denormalizeCountry( $data ) {
-		return $this->serializer->denormalize( $data['country'], Country::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $data['country'], Country::GetClassName(), $this->format, $this->context );
 	}
 
 	/**

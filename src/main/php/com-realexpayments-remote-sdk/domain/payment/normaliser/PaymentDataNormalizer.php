@@ -7,12 +7,15 @@ use com\realexpayments\remote\sdk\domain\CvnNumber;
 use com\realexpayments\remote\sdk\domain\PaymentData;
 use com\realexpayments\remote\sdk\SafeArrayAccess;
 use com\realexpayments\remote\sdk\utils\NormaliserHelper;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class PaymentDataNormalizer implements NormalizerInterface, DenormalizerInterface {
+class PaymentDataNormalizer implements NormalizerInterface, DenormalizerInterface, DenormalizerAwareInterface {
     use SerializerAwareTrait;
+    use DenormalizerAwareTrait;
 
 	private $format;
 	private $context;
@@ -78,7 +81,7 @@ class PaymentDataNormalizer implements NormalizerInterface, DenormalizerInterfac
 	}
 
 	private function denormalizeCvn( $data ) {
-		return $this->serializer->denormalize( $data['cvn'], CvnNumber::GetClassName(), $this->format, $this->context );
+		return $this->denormalizer->denormalize( $data['cvn'], CvnNumber::GetClassName(), $this->format, $this->context );
 	}
 
 	/**
